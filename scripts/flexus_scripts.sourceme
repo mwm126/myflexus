@@ -1,0 +1,1 @@
+source /path/to/flexus_scripts.`basename $SHELL`
