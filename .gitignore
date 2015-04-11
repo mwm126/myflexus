@@ -1,0 +1,5 @@
+*.a
+*gcc_o
+*gcc_dep
+*_dev_gcc
+*iface_gcc
