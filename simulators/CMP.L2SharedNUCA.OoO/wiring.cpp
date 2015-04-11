@@ -110,8 +110,8 @@ bool initializeParameters() {
   theuArchCfg.OffChipLatency.initialize(320);
   theuArchCfg.OnChipLatency.initialize(3);
 
-  theuArchCfg.EarlySGP.initialize(false); // CMU-ONLY
-  theuArchCfg.TrackParallelAccesses.initialize(false); // CMU-ONLY
+//  theuArchCfg.EarlySGP.initialize(false); // CMU-ONLY
+//  theuArchCfg.TrackParallelAccesses.initialize(false); // CMU-ONLY
   theuArchCfg.ValidateMMU.initialize(false);
 
   static const int K = 1024;
