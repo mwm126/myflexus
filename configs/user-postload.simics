@@ -1,7 +1,7 @@
 # Do not change the order of lines in this file
 
 # The number of cores
-$NUMCPUS = 64
+$NUMCPUS = 16
 
 
 # Select Cortex A15- or A8-like cores 
@@ -15,9 +15,9 @@ run-command-file "arm-cortex-a15.simics"
 #flexus.set "-network:topology-file"             "2x3-mesh.topology" # 2-core  
 #flexus.set "-network:topology-file"             "4x3-mesh.topology" # 4-core  
 #flexus.set "-network:topology-file"             "8x3-mesh.topology" # 8-core  
-#flexus.set "-network:topology-file"            "16x3-mesh.topology" # 16-core  
+flexus.set "-network:topology-file"            "16x3-mesh.topology" # 16-core  
 #flexus.set "-network:topology-file"            "32x3-mesh.topology" # 32-core  
-flexus.set "-network:topology-file"            "64x3-mesh.topology" # 64-core  
+#flexus.set "-network:topology-file"            "64x3-mesh.topology" # 64-core  
 
 
 # Two parameters define the number of MCs and their 
@@ -39,7 +39,23 @@ flexus.set "-network:topology-file"            "64x3-mesh.topology" # 64-core
 # | 32      |   4   | "8,11,20,23"            |
 # | 64      |   8   | "2,5,16,23,40,47,58,61" |
 # +---------+-------+-------------------------+
-flexus.set "-net-mapper:MemControllers"                         "8"
-flexus.set "-net-mapper:MemLocation"                            "2,5,16,23,40,47,58,61"
+flexus.set "-net-mapper:MemControllers"                         "4"
+flexus.set "-net-mapper:MemLocation"                            "1,7,8,14"
 
+#flexus.set "-L1d:ghb-size"         "512"
+#flexus.set "-L1d:distance"      "2"
 
+#flexus.set "-L1d:page-count"      "16"
+#flexus.set "-L1d:degree"      "8"
+
+#flexus.set "-L1d:rpt-count"      "1024"
+#3flexus.set "-L1d:degree"      "8"
+
+#flexus.set "-L1d:prefetch-distance"       "256"
+#flexus.set "-L1d:prefetch-degree"         "8"
+#flexus.set "-L1d:stream-num"         "32"
+
+#flexus.set "-L1d:next-n-lines"              "4"
+
+#flexus.set "-pc:prefetch-delay"     "3"
+#flexus.debug-set-severity vverb
