@@ -41,16 +41,16 @@
 # environment
 
 # GCC Compiler Settings
-GCC_PATH=/home/parsacom/tools/gcc
+GCC_PATH=/home/grads/mwm126/Applications
 GCC_BINARY=g++
 GCC_VERSION_NOCHECK=true
 SIMICS_GLIBC_NOCHECK=true
 
 # Boost 1.33.1 path
-BOOST_PATH=/home/parsacom/tools/boost_1_33_1
+BOOST_PATH=/home/mdl/mwm126/boost_1_33_1
 
 # Simics path
-SIMICS_PATH=/home/parsacom/tools/simics
+SIMICS_PATH=/home/grads/mwm126/simics
 
 SIMICS_ARCH=amd64-linux
 #SIMICS_ARCH=x86-linux
@@ -99,14 +99,14 @@ SPECIAL_COMPONENT_CPPS = test.cpp
 GCC=$(GCC_PATH)/bin/$(GCC_BINARY)
 GCC_LIB_PATH=$(GCC_PATH)/lib
 GCC_OPTFLAGS=-O3 -funroll-loops -fno-strict-aliasing
-GCC_LANGFLAGS=-Wall -fmessage-length=160 -x c++ -fPIC -Werror -Wno-unused -DNO_STORAGE
+GCC_LANGFLAGS=-Wall -fmessage-length=160 -x c++ -fPIC -Werror -Wno-unused -DNO_STORAGE -g -rdynamic
 ifeq "$(SIMICS_ARCH)" "amd64-linux"
 ARCH_FLAGS=-DX86_64
 else
 ARCH_FLAGS=
 endif
 GCC_CFLAGS=-c $(GCC_OPTFLAGS) $(GCC_LANGFLAGS) $(ARCH_FLAGS)
-GCC_LFLAGS=-Wl,--whole-archive
+GCC_LFLAGS=-Wl,--whole-archive -g -rdynamic
 GCC_SIMICS_LFLAGS=-shared -export-dynamic -Wl,--whole-archive
 GCC_DEPFLAGS=-M
 
