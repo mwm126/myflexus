@@ -1,26 +1,26 @@
 # Do not change the order of lines in this file
 
 # The number of cores
-$NUMCPUS = 16
+$NUMCPUS = 32
 
 
-# Select Cortex A15- or A8-like cores 
+# Select Cortex A15- or A8-like cores
 #run-command-file "arm-cortex-a8.simics"
 run-command-file "arm-cortex-a15.simics"
 
 
 # For timing, you must use an appropriate netwrok
 # according to the number of core
-#flexus.set "-network:topology-file"             "1x3-mesh.topology" # 1-core  
-#flexus.set "-network:topology-file"             "2x3-mesh.topology" # 2-core  
-#flexus.set "-network:topology-file"             "4x3-mesh.topology" # 4-core  
-#flexus.set "-network:topology-file"             "8x3-mesh.topology" # 8-core  
-flexus.set "-network:topology-file"            "16x3-mesh.topology" # 16-core  
-#flexus.set "-network:topology-file"            "32x3-mesh.topology" # 32-core  
-#flexus.set "-network:topology-file"            "64x3-mesh.topology" # 64-core  
+#flexus.set "-network:topology-file"             "1x3-mesh.topology" # 1-core
+#flexus.set "-network:topology-file"             "2x3-mesh.topology" # 2-core
+#flexus.set "-network:topology-file"             "4x3-mesh.topology" # 4-core
+#flexus.set "-network:topology-file"             "8x3-mesh.topology" # 8-core
+#flexus.set "-network:topology-file"            "16x3-mesh.topology" # 16-core
+flexus.set "-network:topology-file"            "32x3-mesh.topology" # 32-core
+#flexus.set "-network:topology-file"            "64x3-mesh.topology" # 64-core
 
 
-# Two parameters define the number of MCs and their 
+# Two parameters define the number of MCs and their
 # location:
 #   "-net-mapper:MemControllers"
 #   "-net-mapper:MemLocation"
@@ -40,7 +40,8 @@ flexus.set "-network:topology-file"            "16x3-mesh.topology" # 16-core
 # | 64      |   8   | "2,5,16,23,40,47,58,61" |
 # +---------+-------+-------------------------+
 flexus.set "-net-mapper:MemControllers"                         "4"
-flexus.set "-net-mapper:MemLocation"                            "1,7,8,14"
+#flexus.set "-net-mapper:MemLocation"                            "1,7,8,14"
+flexus.set "-net-mapper:MemLocation"                            "8,11,20,23"
 
 #flexus.set "-L1d:ghb-size"         "512"
 #flexus.set "-L1d:distance"      "2"

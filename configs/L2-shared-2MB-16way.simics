@@ -12,7 +12,7 @@
 flexus.set "-L2:bsize"                                         "64" # "Block size" (BlockSize)
 # NewCMPCache [timing]
 flexus.set "-L2:allow_evict_clean"                              "0" # "Cause the cache to evict clean blocks" (EvictClean)
-flexus.set "-L2:array_config" "STD:total_sets=32768:assoc=16:repl=LRU" # "Configuration of cache array (STD:sets=1024:assoc=16:repl=LRU" (ArrayConfiguration)
+flexus.set "-L2:array_config" "STD:total_sets=16384:assoc=8:repl=LRU" # "Configuration of cache array (STD:sets=1024:assoc=16:repl=LRU" (ArrayConfiguration)
 flexus.set "-L2:bank_interleaving"                             "64" # "interleaving between directory banks (64 bytes)" (BankInterleaving)
 flexus.set "-L2:banks"                                     $NUMCPUS # "number of directory banks in each group" (Banks)
 flexus.set "-L2:cache_eb_size"                                 "16" # "Number of Evict Buffer entries for the cache" (CacheEvictBufferSize)
