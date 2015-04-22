@@ -1,11 +1,11 @@
-set basedir $::env(HOME)/mdl/flexus-4.1/results
-set specdir $env(HOME)/mdl/flexus-4.1/scripts/global_job-specs/
-set userspecdir $env(HOME)/specs
-set ckptdir $env(HOME)/mdl/flexus-4.1/ckpts
+set basedir /home/mdl/mwm126/flexus-4.1/results
+set specdir /home/mdl/mwm126/flexus-4.1/scripts/global_job-specs/
+set userspecdir /home/mdl/mwm126/flexus-4.1/specs
+set ckptdir /home/mdl/mwm126/flexus-4.1/ckpts
 set simicsdir  $env(HOME)/simics
 set remote_system Condor
 set gosh_presimics "# commands to run before executing simics"
-set postprocess $env(HOME)/mdl/flexus-4.1/scripts/postprocess.sh
+set postprocess /home/mdl/mwm126/flexus-4.1/scripts/postprocess.sh
 lappend auto_path /path/to/tcllib/lib /path/to/tclx/lib
 
 #### Condor example, creates one submission file for all jobs ####

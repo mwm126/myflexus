@@ -1,7 +1,7 @@
 #!/bin/bash
 
-MUNGE=/path/to/munge-checkpoint.py
-SIMICS_DIR=/path/to/simics
+MUNGE=/home/mdl/mwm126/flexus-4.1/scripts/munge-checkpoint.py
+SIMICS_DIR=/home/grads/mwm126/simics
 
 SIMICS_BIN_DIR=`/bin/ls -d $SIMICS_DIR/*-linux/bin | head -n 1`
 

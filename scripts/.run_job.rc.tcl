@@ -1,3 +1,31 @@
+array set flexus_commands_trace {
+    hands_on_workload {
+        flexus.set "-magic-break:stop_cycle" "2000000"
+        flexus.set-region-interval "1000000"
+        instruction-fetch-mode instruction-fetch-trace
+        console_tracker.add-break-string "bash"
+    }
+}
+
+array set flexus_commands_timing {
+    hands_on_workload {
+        flexus.set "-magic-break:stop_cycle" "150000"
+        flexus.set-region-interval "50000"
+        instruction-fetch-mode instruction-fetch-trace
+        console_tracker.add-break-string "bash"
+    }
+}
+
+array set flexus_commands_flexpoint {
+    flex_one_phase {
+        flexus.set "-magic-break:stop_cycle" "2000000"
+        flexus.set-region-interval "1000000"
+        instruction-fetch-mode instruction-fetch-trace
+        istc-disable
+        dstc-disable
+    }
+}
+
 rungen phase {
   { oracle_16cpu_16cl          baseline  0:0     "cpu0.cycle-break 500000000"         }
   { db2v8_tpcc_nort_16cpu_64cl baseline  0:0     "cpu0.cycle-break 500000000"         }
@@ -92,11 +120,12 @@ rungen flexpoint {
   { classification/32cpu       baseline  0-9:0   "cpu0.cycle-break 25000000;          instruction-fetch-mode instruction-fetch-trace" }
   { classification/64cpu       baseline  0-9:0   "cpu0.cycle-break 25000000;          instruction-fetch-mode instruction-fetch-trace" }
 
+  { nutch                baseline    0:0     $flexus_commands_flexpoint(flex_one_phase) }
+
   { nutch/1cpu                 baseline  0-9:0   "server_cpu0.cycle-break 25000000;   instruction-fetch-mode instruction-fetch-trace" }
   { nutch/2cpu                 baseline  0-9:0   "server_cpu0.cycle-break 25000000;   instruction-fetch-mode instruction-fetch-trace" }
   { nutch/4cpu                 baseline  0-9:0   "server_cpu0.cycle-break 25000000;   instruction-fetch-mode instruction-fetch-trace" }
   { nutch/8cpu                 baseline  0-9:0   "server_cpu0.cycle-break 25000000;   instruction-fetch-mode instruction-fetch-trace" }
-  { nutch/16cpu                baseline  0-9:0   "server_cpu0.cycle-break 25000000;   instruction-fetch-mode instruction-fetch-trace" }
   { nutch/32cpu                baseline  0-9:0   "server_cpu0.cycle-break 25000000;   instruction-fetch-mode instruction-fetch-trace" }
 
   { streaming/1cpu             baseline  0-9:0   "server_cpu0.cycle-break 75000000;   instruction-fetch-mode instruction-fetch-trace" }
@@ -156,6 +185,8 @@ rungen trace {
   { classification/32cpu        baseline    0:0     $simics_commands(trace_commercial) }
   { classification/64cpu        baseline    0:0     $simics_commands(trace_commercial) }
 
+  { nutch                       baseline    0:0     $flexus_commands_trace(hands_on_workload) }
+
   { nutch/1cpu                  baseline    0:0     $simics_commands(trace_commercial) }
   { nutch/2cpu                  baseline    0:0     $simics_commands(trace_commercial) }
   { nutch/4cpu                  baseline    0:0     $simics_commands(trace_commercial) }
@@ -199,6 +230,8 @@ rungen timing {
   { cloud9/16cpu                baseline  0-9:5-84   $simics_commands(timing_commercial) }
   { cloud9/32cpu                baseline  0-9:5-84   $simics_commands(timing_commercial) }
   { cloud9/64cpu                baseline  0-9:5-84   $simics_commands(timing_commercial) }
+
+  { nutch                       baseline    0:0     $flexus_commands_timing(hands_on_workload) }
 
   { nutch/1cpu                  baseline  0-9:5-84   $simics_commands(timing_commercial) }
   { nutch/2cpu                  baseline  0-9:5-84   $simics_commands(timing_commercial) }
