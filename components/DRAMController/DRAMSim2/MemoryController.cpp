@@ -2,20 +2,20 @@
 *  Copyright (c) 2010-2011, Elliott Cooper-Balis
 *                             Paul Rosenfeld
 *                             Bruce Jacob
-*                             University of Maryland 
+*                             University of Maryland
 *                             dramninjas [at] gmail [dot] com
 *  All rights reserved.
-*  
+*
 *  Redistribution and use in source and binary forms, with or without
 *  modification, are permitted provided that the following conditions are met:
-*  
+*
 *     * Redistributions of source code must retain the above copyright notice,
 *        this list of conditions and the following disclaimer.
-*  
+*
 *     * Redistributions in binary form must reproduce the above copyright notice,
 *        this list of conditions and the following disclaimer in the documentation
 *        and/or other materials provided with the distribution.
-*  
+*
 *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -39,9 +39,56 @@
 #include "MemorySystem.h"
 #include "AddressMapping.h"
 
+#include <core/flexus.hpp>
+#include <fstream>
+#include <iostream>
+
 #define SEQUENTIAL(rank,bank) (rank*NUM_BANKS)+bank
 
 using namespace DRAMSim;
+
+void print_packet_in_mem(string the_string, BusPacket* packet) {
+  std::ofstream myfile;
+
+  //  myfile = std::cout;
+
+  //  myfile.open("/home/mdl/mwm126/flexus-4.1/MEMCONTROLLER_TRACES",std::ios_base::app);
+  std::cout << "MEMCONTROLLER time=, " << Flexus::Core::theFlexus->cycleCount() << ", ";
+  switch (packet->busPacketType)
+    {
+    case READ:
+      std::cout << "[READ], pa=,0x"<<hex<<packet->physicalAddress<<dec<<",   rank=,"<<packet->rank<<",   bank=,"<<packet->bank<<",   row=,"<<packet->row<<",   column=,"<<packet->column<<",  ";
+      break;
+    case READ_P:
+      std::cout << "[READ_P], pa=,0x"<<hex<<packet->physicalAddress<<dec<<",   rank=,"<<packet->rank<<",   bank=,"<<packet->bank<<",   row=,"<<packet->row<<",   column=,"<<packet->column<<",  ";
+      break;
+    case WRITE:
+      std::cout << "[WRITE], pa=,0x"<<hex<<packet->physicalAddress<<dec<<",   rank=,"<<packet->rank<<",   bank=,"<<packet->bank<<",   row=,"<<packet->row<<",   column=,"<<packet->column<<",  ";
+      break;
+    case WRITE_P:
+      std::cout << "[WRITE_P], pa=,0x"<<hex<<packet->physicalAddress<<dec<<",   rank=,"<<packet->rank<<",   bank=,"<<packet->bank<<",   row=,"<<packet->row<<",   column=,"<<packet->column<<",  ";
+      break;
+    case ACTIVATE:
+      std::cout << "[ACT], pa=,0x"<<hex<<packet->physicalAddress<<dec<<",   rank=,"<<packet->rank<<",   bank=,"<<packet->bank<<",   row=,"<<packet->row<<",   column=,"<<packet->column<<",  ";
+      break;
+    case PRECHARGE:
+      std::cout << "[PRE], pa=,0x"<<hex<<packet->physicalAddress<<dec<<",   rank=,"<<packet->rank<<",   bank=,"<<packet->bank<<",   row=,"<<packet->row<<",   column=,"<<packet->column<<",  ";
+      break;
+    case REFRESH:
+      std::cout << "[REF], pa=,0x"<<hex<<packet->physicalAddress<<dec<<",   rank=,"<<packet->rank<<",   bank=,"<<packet->bank<<",   row=,"<<packet->row<<",   column=,"<<packet->column<<",  ";
+      break;
+    case DATA:
+      std::cout << "[DATA], pa=,0x"<<hex<<packet->physicalAddress<<dec<<",   rank=,"<<packet->rank<<",   bank=,"<<packet->bank<<",   row=,"<<packet->row<<",   column=,"<<packet->column<<",   data=,"<<packet->data<<",  =";
+      BusPacket::printData(packet->data);
+      std::cout << "";
+      break;
+    default:
+      ERROR("Trying to print unknown kind of bus packet");
+      exit(-1);
+    }
+  std::cout << "  " << the_string << std::endl;
+  //  myfile.close();
+}
 
 MemoryController::MemoryController(MemorySystem *parent, std::ofstream *outfile) :
 		commandQueue (CommandQueue(bankStates)),
@@ -54,7 +101,7 @@ MemoryController::MemoryController(MemorySystem *parent, std::ofstream *outfile)
 	parentMemorySystem = parent;
 	if (VIS_FILE_OUTPUT)
 	{
-		visDataOut = outfile; 
+		visDataOut = outfile;
 	}
 
 
@@ -293,8 +340,10 @@ void MemoryController::update()
 				{
 					PRINT(" ++ Adding Read energy to total energy");
 				}
+				print_packet_in_mem("read or read_p",poppedBusPacket);
+
 				burstEnergy[rank] += (IDD4R - IDD3N) * BL/2 * NUM_DEVICES;
-				if (poppedBusPacket->busPacketType == READ_P) 
+				if (poppedBusPacket->busPacketType == READ_P)
 				{
 					//Don't bother setting next read or write times because the bank is no longer active
 					//bankStates[rank][bank].currentBankState = Idle;
@@ -346,7 +395,9 @@ void MemoryController::update()
 				break;
 			case WRITE_P:
 			case WRITE:
-				if (poppedBusPacket->busPacketType == WRITE_P) 
+				print_packet_in_mem("write or write_p",poppedBusPacket);
+
+				if (poppedBusPacket->busPacketType == WRITE_P)
 				{
 					bankStates[rank][bank].nextActivate = max(currentClockCycle + WRITE_AUTOPRE_DELAY,
 							bankStates[rank][bank].nextActivate);
@@ -402,6 +453,8 @@ void MemoryController::update()
 				break;
 			case ACTIVATE:
 				//add energy to account for total
+				print_packet_in_mem("activate",poppedBusPacket);
+
 				if (DEBUG_POWER)
 				{
 					PRINT(" ++ Adding Activate and Precharge energy to total energy");
@@ -429,6 +482,7 @@ void MemoryController::update()
 
 				break;
 			case PRECHARGE:
+				print_packet_in_mem("precharge, of course",poppedBusPacket);
 				bankStates[rank][bank].currentBankState = Precharging;
 				bankStates[rank][bank].lastCommand = PRECHARGE;
 				bankStates[rank][bank].stateChangeCountdown = tRP;
@@ -437,6 +491,7 @@ void MemoryController::update()
 				break;
 			case REFRESH:
 				//add energy to account for total
+				print_packet_in_mem("and....refresh",poppedBusPacket);
 				if (DEBUG_POWER)
 				{
 					PRINT(" ++ Adding Refresh energy to total energy");
@@ -493,10 +548,10 @@ void MemoryController::update()
 		//and add them to the command queue
 		if (commandQueue.hasRoomFor(2, newTransactionRank, newTransactionBank))
 		{
-			if (DEBUG_ADDR_MAP) 
+			if (DEBUG_ADDR_MAP)
 			{
 				PRINTN("== New Transaction - Mapping Address [0x" << hex << transaction.address << dec << "]");
-				if (transaction.transactionType == DATA_READ) 
+				if (transaction.transactionType == DATA_READ)
 				{
 					PRINT(" (Read)");
 				}
@@ -768,7 +823,7 @@ bool MemoryController::addTransaction(Transaction &trans)
 		transactionQueue.push_back(trans);
 		return true;
 	}
-	else 
+	else
 	{
 		return false;
 	}
@@ -829,9 +884,9 @@ void MemoryController::printStats(bool finalStats)
 	// only the first memory channel should print the timestamp
 	if (VIS_FILE_OUTPUT && myChannel == 0)
 	{
-		csvOut << "ms" <<currentClockCycle * tCK * 1E-6; 
+		csvOut << "ms" <<currentClockCycle * tCK * 1E-6;
 	}
-	double totalAggregateBandwidth = 0.0;	
+	double totalAggregateBandwidth = 0.0;
 	for (size_t r=0;r<NUM_RANKS;r++)
 	{
 
@@ -879,15 +934,15 @@ void MemoryController::printStats(bool finalStats)
 				totalAggregateBandwidth += bandwidth[SEQUENTIAL(r,b)];
 				csvOut << CSVWriter::IndexedName("Average_Latency",myChannel,r,b) << averageLatency[SEQUENTIAL(r,b)];
 			}
-			csvOut << CSVWriter::IndexedName("Rank_Aggregate_Bandwidth",myChannel,r) << totalRankBandwidth; 
-			csvOut << CSVWriter::IndexedName("Rank_Average_Bandwidth",myChannel,r) << totalRankBandwidth/NUM_RANKS; 
+			csvOut << CSVWriter::IndexedName("Rank_Aggregate_Bandwidth",myChannel,r) << totalRankBandwidth;
+			csvOut << CSVWriter::IndexedName("Rank_Average_Bandwidth",myChannel,r) << totalRankBandwidth/NUM_RANKS;
 		}
 	}
 	if (VIS_FILE_OUTPUT)
 	{
 		csvOut << CSVWriter::IndexedName("Aggregate_Bandwidth",myChannel) << totalAggregateBandwidth;
 		csvOut << CSVWriter::IndexedName("Average_Bandwidth",myChannel) << totalAggregateBandwidth / (NUM_RANKS*NUM_BANKS);
-		csvOut.finalize(); 
+		csvOut.finalize();
 	}
 
 	// only print the latency histogram at the end of the simulation since it clogs the output too much to print every epoch
@@ -914,7 +969,7 @@ void MemoryController::printStats(bool finalStats)
 			PRINT( " --- Grand Total Bank usage list");
 			for (size_t i=0;i<NUM_RANKS;i++)
 			{
-				PRINT("Rank "<<i<<":"); 
+				PRINT("Rank "<<i<<":");
 				for (size_t j=0;j<NUM_BANKS;j++)
 				{
 					PRINT( "  b"<<j<<": "<<grandTotalBankAccesses[SEQUENTIAL(i,j)]);
