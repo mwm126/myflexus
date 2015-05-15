@@ -1,0 +1,17 @@
+#!/bin/bash
+
+TIME=`date +%s`
+
+for ii in `seq 7`; do
+    JOBNAME=${TIME}_nutch_open_scheme${ii}
+    /usr/bin/time -v ./scripts/run_job -run timing -cfg addr_scheme${ii} -local -ma -runfxpt 0:1-4 -job ${JOBNAME} -state mwm126/mystate CMP.L2SharedNUCA.DRAMSim.OoO nutch 2>&1 | tee results/${JOBNAME}.log &
+
+    JOBNAME=${TIME}_nutch_open_2krows_scheme${ii}
+    /usr/bin/time -v ./scripts/run_job -run timing -cfg addr_2krows_scheme${ii} -local -ma -runfxpt 0:1-4 -job ${JOBNAME} -state mwm126/mystate CMP.L2SharedNUCA.DRAMSim.OoO nutch 2>&1 | tee results/${JOBNAME}.log &
+
+    JOBNAME=${TIME}_nutch_open_512rows_scheme${ii}
+    /usr/bin/time -v ./scripts/run_job -run timing -cfg addr_512rows_scheme${ii} -local -ma -runfxpt 0:1-4 -job ${JOBNAME} -state mwm126/mystate CMP.L2SharedNUCA.DRAMSim.OoO nutch 2>&1 | tee results/${JOBNAME}.log &
+
+    JOBNAME=${TIME}_nutch_close_scheme${ii}
+    /usr/bin/time -v ./scripts/run_job -run timing -cfg addr_close_scheme${ii} -local -ma -runfxpt 0:1-4 -job ${JOBNAME} -state mwm126/mystate CMP.L2SharedNUCA.DRAMSim.OoO nutch 2>&1 | tee results/${JOBNAME}.log
+done

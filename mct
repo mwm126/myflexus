@@ -1,0 +1,57 @@
+#!/usr/bin/env python
+
+import csv
+import sys
+
+#with open(sys.argv[1]) as mct:
+with sys.stdin as mct:
+    reader = csv.reader(mct, delimiter=",", quotechar='"')
+    hits =[[ 0 for ii in range(0,8)] for jj in range(0,4) ]
+    misses =[[ 0 for ii in range(0,8)] for jj in range(0,4) ]
+    banks =[[ -1 for ii in range(0,8)] for jj in range(0,4) ]
+    t_refresh =[[ 0 for ii in range(0,8)] for jj in range(0,4) ]
+    just_refreshed =[[ False for ii in range(0,8)] for jj in range(0,4) ]
+    prev_time = -1
+    for line in reader:
+        time = int(line[1])
+        rank = int(line[6])
+        bank = int(line[8])
+        row = int(line[10])
+        column = int(line[12])
+
+        if (prev_time > time):
+            print " NEW FLEXPOINT "
+            banks =[[ -1 for ii in range(0,8)] for jj in range(0,4) ]
+            t_refresh =[[ 0 for ii in range(0,8)] for jj in range(0,4) ]
+            just_refreshed =[[ False for ii in range(0,8)] for jj in range(0,4) ]
+
+        if line[2] == " [REF]":
+            t_refresh[rank][bank] = int(time)
+            just_refreshed[rank][bank] = True
+#            print "did refresh of",rank,bank,"at time",time
+        elif just_refreshed[rank][bank]:
+            print "cycles since last refresh of",rank,bank,"is",int(time)-t_refresh[rank][bank]," (time:",time,")"
+            just_refreshed[rank][bank] = False
+
+        if line[2] == " [ACT]":
+            if banks[rank][bank] == row:
+                hits[rank][bank] += 1
+#                print rank,bank,"HIT",row,column
+            else:
+                misses[rank][bank] += 1
+#                print rank,bank,"miss",row,column
+            banks[rank][bank] = row
+
+        prev_time = time
+    print " Hit Count"
+    for rank in hits: print rank
+
+    print " Miss Count"
+    for rank in misses: print rank
+
+    print 
+    print "Hit rate for 4x ranks, 8x banks:"
+    for rank in range(0,4):
+        for bank in range(0,8):
+            print format(hits[rank][bank]*100./(1+misses[rank][bank]+hits[rank][bank]),'.1f'),"%  ",
+        print 
