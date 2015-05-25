@@ -4,13 +4,14 @@ import csv
 import sys
 
 #with open(sys.argv[1]) as mct:
-with sys.stdin as mct:
+mct = sys.stdin
+try:
     reader = csv.reader(mct, delimiter=",", quotechar='"')
-    hits =[[ 0 for ii in range(0,8)] for jj in range(0,4) ]
-    misses =[[ 0 for ii in range(0,8)] for jj in range(0,4) ]
-    banks =[[ -1 for ii in range(0,8)] for jj in range(0,4) ]
-    t_refresh =[[ 0 for ii in range(0,8)] for jj in range(0,4) ]
-    just_refreshed =[[ False for ii in range(0,8)] for jj in range(0,4) ]
+    hits =[[ 0 for ii in range(0,8)] for jj in range(0,8) ]
+    misses =[[ 0 for ii in range(0,8)] for jj in range(0,8) ]
+    banks =[[ -1 for ii in range(0,8)] for jj in range(0,8) ]
+    t_refresh =[[ 0 for ii in range(0,8)] for jj in range(0,8) ]
+    just_refreshed =[[ False for ii in range(0,8)] for jj in range(0,8) ]
     prev_time = -1
     for line in reader:
         time = int(line[1])
@@ -20,17 +21,18 @@ with sys.stdin as mct:
         column = int(line[12])
 
         if (prev_time > time):
-            print " NEW FLEXPOINT "
-            banks =[[ -1 for ii in range(0,8)] for jj in range(0,4) ]
-            t_refresh =[[ 0 for ii in range(0,8)] for jj in range(0,4) ]
-            just_refreshed =[[ False for ii in range(0,8)] for jj in range(0,4) ]
+#            print " NEW FLEXPOINT "
+            banks =[[ -1 for ii in range(0,8)] for jj in range(0,8) ]
+            t_refresh =[[ 0 for ii in range(0,8)] for jj in range(0,8) ]
+            just_refreshed =[[ False for ii in range(0,8)] for jj in range(0,8) ]
 
+#        print rank,bank
         if line[2] == " [REF]":
             t_refresh[rank][bank] = int(time)
             just_refreshed[rank][bank] = True
 #            print "did refresh of",rank,bank,"at time",time
         elif just_refreshed[rank][bank]:
-            print "cycles since last refresh of",rank,bank,"is",int(time)-t_refresh[rank][bank]," (time:",time,")"
+#            print "cycles since last refresh of",rank,bank,"is",int(time)-t_refresh[rank][bank]," (time:",time,")"
             just_refreshed[rank][bank] = False
 
         if line[2] == " [ACT]":
@@ -50,8 +52,19 @@ with sys.stdin as mct:
     for rank in misses: print rank
 
     print 
-    print "Hit rate for 4x ranks, 8x banks:"
-    for rank in range(0,4):
+    print "Hit rate for 8x ranks, 8x banks:"
+    hit = 0
+    tot = 0
+    for rank in range(0,8):
         for bank in range(0,8):
             print format(hits[rank][bank]*100./(1+misses[rank][bank]+hits[rank][bank]),'.1f'),"%  ",
+            if (hits[rank][bank] > 0 and hits[rank][bank] > 0):
+                hit = hit + hits[rank][bank]
+                tot = tot + misses[rank][bank]+hits[rank][bank]
         print 
+
+    print "OVERALL, ",hit*1.0/tot
+
+except IndexError:
+    print rank,bank
+    print just_refreshed

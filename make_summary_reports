@@ -1,0 +1,24 @@
+#!/bin/bash
+
+TIMESTAMP=$1
+
+#for benchmark in cassandra classification cloud9 cloudstone nutch streaming ; do
+for benchmark in cassandra classification nutch; do
+    echo "Doing benchmark ${benchmark}..."
+    for cfg in addr_128rows addr_256rows addr_512rows addr addr_2krows addr_4krows addr_8krows; do
+        PRE=${TIMESTAMP}_${benchmark}_${cfg}
+        rm -f "${PRE}"
+        echo "Generating file ${PRE}..."
+	for ii in `seq 7`; do
+            FF=results/${PRE}_scheme${ii}.log
+            [[ -f ${FF} ]] || { echo "file does not exist: $FF"; }
+	    printf "\n\n$FF\n" >> "$PRE"
+	    grep MEMCONTROLLER "$FF" | mct >> "$PRE"
+	done
+        echo "Done with file ${PRE}."
+    done
+    wait
+    echo "Done with benchmark ${benchmark}."
+done
+
+echo All done.

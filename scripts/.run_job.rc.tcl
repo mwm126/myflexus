@@ -95,6 +95,8 @@ rungen flexpoint {
   { flexus_test_app_v9         baseline    0:0   "cpu0.cycle-break 4000000;           instruction-fetch-mode instruction-fetch-trace" }
   { flexus_test_app_x86        baseline    0:0   "cpu0.cycle-break 4000000;           instruction-fetch-mode instruction-fetch-trace" }
 
+  { cassandra                  baseline    0:0     $flexus_commands_flexpoint(flex_one_phase) }
+
   { cassandra/1cpu             baseline  0-9:0   "server_cpu0.cycle-break 25000000;   instruction-fetch-mode instruction-fetch-trace" }
   { cassandra/2cpu             baseline  0-9:0   "server_cpu0.cycle-break 25000000;   instruction-fetch-mode instruction-fetch-trace" }
   { cassandra/4cpu             baseline  0-9:0   "server_cpu0.cycle-break 25000000;   instruction-fetch-mode instruction-fetch-trace" }
@@ -102,6 +104,8 @@ rungen flexpoint {
   { cassandra/16cpu            baseline  0-9:0   "server_cpu0.cycle-break 25000000;   instruction-fetch-mode instruction-fetch-trace" }
   { cassandra/32cpu            baseline  0-9:0   "server_cpu0.cycle-break 25000000;   instruction-fetch-mode instruction-fetch-trace" }
   { cassandra/64cpu            baseline  0-9:0   "server_cpu0.cycle-break 25000000;   instruction-fetch-mode instruction-fetch-trace" }
+
+  { cloud9                baseline    0:0     $flexus_commands_flexpoint(flex_one_phase) }
 
   { cloud9/1cpu                baseline  0-9:0   "cpu0.cycle-break 25000000;          instruction-fetch-mode instruction-fetch-trace" }
   { cloud9/2cpu                baseline  0-9:0   "cpu0.cycle-break 25000000;          instruction-fetch-mode instruction-fetch-trace" }
@@ -111,6 +115,8 @@ rungen flexpoint {
   { cloud9/16cpu               baseline  0-9:0   "cpu0.cycle-break 25000000;          instruction-fetch-mode instruction-fetch-trace" }
   { cloud9/32cpu               baseline  0-9:0   "cpu0.cycle-break 25000000;          instruction-fetch-mode instruction-fetch-trace" }
   { cloud9/64cpu               baseline  0-9:0   "cpu0.cycle-break 25000000;          instruction-fetch-mode instruction-fetch-trace" }
+
+  { classification             baseline    0:0     $flexus_commands_flexpoint(flex_one_phase) }
 
   { classification/1cpu        baseline  0-9:0   "cpu0.cycle-break 25000000;          instruction-fetch-mode instruction-fetch-trace" }
   { classification/2cpu        baseline  0-9:0   "cpu0.cycle-break 25000000;          instruction-fetch-mode instruction-fetch-trace" }
@@ -128,6 +134,8 @@ rungen flexpoint {
   { nutch/8cpu                 baseline  0-9:0   "server_cpu0.cycle-break 25000000;   instruction-fetch-mode instruction-fetch-trace" }
   { nutch/32cpu                baseline  0-9:0   "server_cpu0.cycle-break 25000000;   instruction-fetch-mode instruction-fetch-trace" }
 
+  { streaming                  baseline    0:0     $flexus_commands_flexpoint(flex_one_phase) }
+
   { streaming/1cpu             baseline  0-9:0   "server_cpu0.cycle-break 75000000;   instruction-fetch-mode instruction-fetch-trace" }
   { streaming/2cpu             baseline  0-9:0   "server_cpu0.cycle-break 75000000;   instruction-fetch-mode instruction-fetch-trace" }
   { streaming/4cpu             baseline  0-9:0   "server_cpu0.cycle-break 75000000;   instruction-fetch-mode instruction-fetch-trace" }
@@ -135,6 +143,8 @@ rungen flexpoint {
   { streaming/16cpu            baseline  0-9:0   "server_cpu0.cycle-break 75000000;   instruction-fetch-mode instruction-fetch-trace" }
   { streaming/32cpu            baseline  0-9:0   "server_cpu0.cycle-break 75000000;   instruction-fetch-mode instruction-fetch-trace" }
   { streaming/64cpu            baseline  0-9:0   "server_cpu0.cycle-break 75000000;   instruction-fetch-mode instruction-fetch-trace" }
+
+  { cloudstone                 baseline    0:0     $flexus_commands_flexpoint(flex_one_phase) }
 
   { cloudstone/1cpu            baseline  0-9:0   "server_cpu0.cycle-break 25000000;   instruction-fetch-mode instruction-fetch-trace" }
   { cloudstone/2cpu            baseline  0-9:0   "server_cpu0.cycle-break 25000000;   instruction-fetch-mode instruction-fetch-trace" }
@@ -169,6 +179,8 @@ rungen trace {
   { flexus_test_app_v9          baseline    0:0     $simics_commands(trace_commercial) }
   { flexus_test_app_x86         baseline    0:0     $simics_commands(trace_commercial) }
 
+  { cloud9                      baseline    0:0     $flexus_commands_trace(hands_on_workload) }
+
   { cloud9/1cpu                 baseline    0:0     $simics_commands(trace_commercial) }
   { cloud9/2cpu                 baseline    0:0     $simics_commands(trace_commercial) }
   { cloud9/4cpu                 baseline    0:0     $simics_commands(trace_commercial) }
@@ -176,6 +188,8 @@ rungen trace {
   { cloud9/16cpu                baseline    0:0     $simics_commands(trace_commercial) }
   { cloud9/32cpu                baseline    0:0     $simics_commands(trace_commercial) }
   { cloud9/64cpu                baseline    0:0     $simics_commands(trace_commercial) }
+
+  { classification             baseline    0:0     $flexus_commands_trace(hands_on_workload) }
 
   { classification/1cpu         baseline    0:0     $simics_commands(trace_commercial) }
   { classification/2cpu         baseline    0:0     $simics_commands(trace_commercial) }
@@ -194,6 +208,8 @@ rungen trace {
   { nutch/16cpu                 baseline    0:0     $simics_commands(trace_commercial) }
   { nutch/32cpu                 baseline    0:0     $simics_commands(trace_commercial) }
 
+  { cassandra          baseline    0:0     $flexus_commands_trace(hands_on_workload) }
+
   { cassandra/1cpu              baseline    0:0     $simics_commands(trace_commercial) }
   { cassandra/2cpu              baseline    0:0     $simics_commands(trace_commercial) }
   { cassandra/4cpu              baseline    0:0     $simics_commands(trace_commercial) }
@@ -202,6 +218,8 @@ rungen trace {
   { cassandra/32cpu             baseline    0:0     $simics_commands(trace_commercial) }
   { cassandra/64cpu             baseline    0:0     $simics_commands(trace_commercial) }
 
+  { streaming                   baseline    0:0     $flexus_commands_trace(hands_on_workload) }
+
   { streaming/1cpu              baseline    0:0     $simics_commands(trace_commercial) }
   { streaming/2cpu              baseline    0:0     $simics_commands(trace_commercial) }
   { streaming/4cpu              baseline    0:0     $simics_commands(trace_commercial) }
@@ -209,6 +227,8 @@ rungen trace {
   { streaming/16cpu             baseline    0:0     $simics_commands(trace_commercial) }
   { streaming/32cpu             baseline    0:0     $simics_commands(trace_commercial) }
   { streaming/64cpu             baseline    0:0     $simics_commands(trace_commercial) }
+
+  { cloudstone                   baseline    0:0     $flexus_commands_trace(hands_on_workload) }
 
   { cloudstone/1cpu             baseline    0:0     $simics_commands(trace_commercial) }
   { cloudstone/2cpu             baseline    0:0     $simics_commands(trace_commercial) }
@@ -222,6 +242,8 @@ rungen trace {
 rungen timing {
   { flexus_test_app_v9          baseline    0:18-28  $simics_commands(timing_commercial) }
   { flexus_test_app_x86         baseline    0:12-24  $simics_commands(timing_commercial) }
+
+  { cloud9                      baseline    0:0     $flexus_commands_timing(hands_on_workload) }
 
   { cloud9/1cpu                 baseline  0-9:5-84   $simics_commands(timing_commercial) }
   { cloud9/2cpu                 baseline  0-9:5-84   $simics_commands(timing_commercial) }
@@ -240,6 +262,8 @@ rungen timing {
   { nutch/16cpu                 baseline  0-9:5-84   $simics_commands(timing_commercial) }
   { nutch/32cpu                 baseline  0-9:5-84   $simics_commands(timing_commercial) }
 
+  { cassandra              baseline    0:0     $flexus_commands_timing(hands_on_workload) }
+
   { cassandra/1cpu              baseline  0-9:5-84   $simics_commands(timing_commercial_long) }
   { cassandra/2cpu              baseline  0-9:5-84   $simics_commands(timing_commercial_long) }
   { cassandra/4cpu              baseline  0-9:5-84   $simics_commands(timing_commercial_long) }
@@ -247,6 +271,8 @@ rungen timing {
   { cassandra/16cpu             baseline  0-9:5-84   $simics_commands(timing_commercial_long) }
   { cassandra/32cpu             baseline  0-9:5-84   $simics_commands(timing_commercial_long) }
   { cassandra/64cpu             baseline  0-9:5-84   $simics_commands(timing_commercial_long) }
+
+  { classification              baseline    0:0     $flexus_commands_timing(hands_on_workload) }
 
   { classification/1cpu         baseline  0-9:5-84   $simics_commands(timing_commercial) }
   { classification/2cpu         baseline  0-9:5-84   $simics_commands(timing_commercial) }
@@ -256,6 +282,8 @@ rungen timing {
   { classification/32cpu        baseline  0-9:5-84   $simics_commands(timing_commercial) }
   { classification/64cpu        baseline  0-9:5-84   $simics_commands(timing_commercial) }
 
+  { streaming                    baseline    0:0     $flexus_commands_timing(hands_on_workload) }
+
   { streaming/1cpu              baseline  0-9:5-84   $simics_commands(timing_commercial) }
   { streaming/2cpu              baseline  0-9:5-84   $simics_commands(timing_commercial) }
   { streaming/4cpu              baseline  0-9:5-84   $simics_commands(timing_commercial) }
@@ -263,6 +291,8 @@ rungen timing {
   { streaming/16cpu             baseline  0-9:5-84   $simics_commands(timing_commercial) }
   { streaming/32cpu             baseline  0-9:5-84   $simics_commands(timing_commercial) }
   { streaming/64cpu             baseline  0-9:5-84   $simics_commands(timing_commercial) }
+
+  { cloudstone                    baseline    0:0     $flexus_commands_timing(hands_on_workload) }
 
   { cloudstone/1cpu             baseline  0-9:5-84   $simics_commands(timing_commercial) }
   { cloudstone/2cpu             baseline  0-9:5-84   $simics_commands(timing_commercial) }
